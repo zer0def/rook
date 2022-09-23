@@ -45,7 +45,7 @@ GOARCH := $(word 2, $(subst _, ,$(PLATFORM)))
 export GOOS GOARCH
 endif
 
-ALL_PLATFORMS ?= darwin_amd64 darwin_arm64 windows_amd64 linux_amd64 linux_arm64
+ALL_PLATFORMS ?= darwin_amd64 darwin_arm64 windows_amd64 linux_amd64 linux_arm64 linux_riscv64
 
 export GOARM
 
