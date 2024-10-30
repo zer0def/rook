@@ -487,7 +487,7 @@ func TestDefaultProbes(t *testing.T) {
 			// that affect runtime stability & best verified by ci
 			assert.NotNil(t, got.Exec)
 			cmd := got.Exec.Command
-			assert.Equal(t, "bash", cmd[0])
+			assert.Equal(t, "sh", cmd[0])
 			assert.Equal(t, "-c", cmd[1])
 			script := cmd[2]
 

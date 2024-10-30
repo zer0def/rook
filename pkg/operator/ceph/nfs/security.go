@@ -179,7 +179,7 @@ func generateSssdSidecarResources(nfs *cephv1.CephNFS, sidecarCfg *cephv1.SSSDSi
 	init = &v1.Container{
 		Name: "copy-sssd-sockets",
 		Command: []string{
-			"bash", "-c",
+			"sh", "-c",
 			`set -ex
 cp --archive --verbose /var/lib/sss/pipes/* /tmp/var/lib/sss/pipes/.
 ls --all --recursive /tmp/var/lib/sss/pipes`,
@@ -255,7 +255,7 @@ cat /etc/idmapd.conf`
 	init = &v1.Container{
 		Name: "generate-krb5-conf",
 		Command: []string{
-			"bash", "-c",
+			"sh", "-c",
 			`set -ex
 cat << EOF > /tmp/etc/krb5.conf
 [logging]
@@ -313,7 +313,7 @@ func generateSssdNsswitchConfResources(r *ReconcileCephNFS, nfs *cephv1.CephNFS)
 	init := &v1.Container{
 		Name: "generate-nsswitch-conf",
 		Command: []string{
-			"bash", "-c",
+			"sh", "-c",
 			`set -ex
 cat << EOF > /tmp/etc/nsswitch.conf
 passwd: files sss
