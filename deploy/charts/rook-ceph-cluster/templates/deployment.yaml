@@ -38,7 +38,7 @@ spec:
         - name: rook-ceph-tools
           image: {{ .Values.toolbox.image | default (printf "%s:%s" .Values.cephImage.repository .Values.cephImage.tag) }}
           command:
-            - /bin/bash
+            - sh
             - -c
             - |
               # Replicate the script from toolbox.sh inline so the ceph image
