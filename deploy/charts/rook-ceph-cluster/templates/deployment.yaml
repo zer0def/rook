@@ -32,7 +32,7 @@ spec:
         - name: rook-ceph-tools
           image: {{ default .Values.cephClusterSpec.cephVersion.image .Values.toolbox.image }}
           command:
-            - /bin/bash
+            - /bin/sh
             - -c
             - |
               # Replicate the script from toolbox.sh inline so the ceph image
