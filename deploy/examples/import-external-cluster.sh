@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash
+#!/bin/sh
 set -e
 
 ##############
@@ -371,14 +371,13 @@ END
 
 function createTopology() {
   TOPOLOGY=""
-  declare -a topology_failure_domain_values_array=()
-  declare -a topology_pools_array=()
-  topology_pools=("$(echo "$TOPOLOGY_POOLS" | tr "," "\n")")
-  for i in ${topology_pools[0]}; do topology_pools_array+=("$i"); done
-  topology_failure_domain_values=("$(echo "$TOPOLOGY_FAILURE_DOMAIN_VALUES" | tr "," "\n")")
-  for i in ${topology_failure_domain_values[0]}; do topology_failure_domain_values_array+=("$i"); done
-  for ((i = 0; i < ${#topology_failure_domain_values_array[@]}; i++)); do
-    getTopologyTemplate "${topology_pools_array[$i]}" "$TOPOLOGY_FAILURE_DOMAIN_LABEL" "${topology_failure_domain_values_array[$i]}"
+  topology_pools="$(echo "$TOPOLOGY_POOLS" | tr "," "\n")"
+  topology_failure_domain_values="$(echo "$TOPOLOGY_FAILURE_DOMAIN_VALUES" | tr "," "\n")"
+  for i in $(seq 0 $(( $(echo "${topology_failure_domain_values}" | wc -l)-1 )) ); do
+    getTopologyTemplate \
+      "$(echo "${topology_pools}" | tr '[:space:]' '\n' | tail -n+$((${i}+1)) | head -n1)" \
+      "$TOPOLOGY_FAILURE_DOMAIN_LABEL" \
+      "$(echo "${topology_failure_domain_values}" | tr '[:space:]' '\n' | tail -n+$((${i}+1)) | head -n1)"
     TOPOLOGY="$TOPOLOGY"$'\n'"$topology"
     topology=""
   done
