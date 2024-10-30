@@ -321,7 +321,7 @@ func (c *clusterConfig) createCaBundleUpdateInitContainer(rgwConfig *rgwConfig) 
 	volumeMounts = append(volumeMounts, updatedBundleMount)
 	return v1.Container{
 		Name:    "update-ca-bundle-initcontainer",
-		Command: []string{"/bin/bash", "-c"},
+		Command: []string{"/bin/sh", "-c"},
 		// copy all content of caBundleExtractedDir to avoid directory mount itself
 		Args: []string{
 			fmt.Sprintf("/usr/bin/update-ca-trust extract; cp -rf %s/* %s", caBundleExtractedDir, updatedCaBundleDir),
@@ -357,7 +357,7 @@ func (c *clusterConfig) vaultTokenInitContainer(rgwConfig *rgwConfig, kmsEnabled
 	return v1.Container{
 		Name: "vault-initcontainer-token-file-setup",
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(setupVaultTokenFile,
 				kms.EtcVaultDir, rgwVaultDirName),
@@ -585,7 +585,7 @@ func (c *clusterConfig) defaultReadinessProbe() (*v1.Probe, error) {
 		ProbeHandler: v1.ProbeHandler{
 			Exec: &v1.ExecAction{
 				Command: []string{
-					"bash", "-c", script,
+					"sh", "-c", script,
 				},
 			},
 		},
@@ -655,7 +655,7 @@ func (c *clusterConfig) defaultStartupProbe() (*v1.Probe, error) {
 		ProbeHandler: v1.ProbeHandler{
 			Exec: &v1.ExecAction{
 				Command: []string{
-					"bash", "-c", script,
+					"sh", "-c", script,
 				},
 			},
 		},
