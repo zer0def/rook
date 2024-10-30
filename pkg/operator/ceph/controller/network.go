@@ -242,7 +242,7 @@ func discoverAddressRanges(
 		"rook-ceph-network-canary",
 		"rook-ceph-network-"+string(cephNetwork)+"-canary",
 		clusterNamespace,
-		[]string{"bash", "-c", `set -e
+		[]string{"sh", "-c", `set -e
 			cat /var/lib/rook/multus/network-status
 			echo "" # newline
 			echo "` + separator() + `"
@@ -365,7 +365,7 @@ func containerWaitForNetworkStatus(clusterSpec *cephv1.ClusterSpec, rookImage st
 	return corev1.Container{
 		Name: "wait-for-network-status-annotation",
 		Command: []string{
-			"bash",
+			"sh",
 			"-c",
 			`set -e
 			while [ ! -s /var/lib/rook/multus/network-status ]; do
