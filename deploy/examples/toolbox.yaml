@@ -20,7 +20,7 @@ spec:
         - name: rook-ceph-tools
           image: quay.io/ceph/ceph:v17.2.6
           command:
-            - /bin/bash
+            - /bin/sh
             - -c
             - |
               # Replicate the script from toolbox.sh inline so the ceph image
