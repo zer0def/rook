@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 PROBE_TYPE="{{ .ProbeType }}"
 PROBE_PORT="{{ .Port }}"
 PROBE_PROTOCOL="{{ .Protocol }}"
 PROBE_PATH="{{ .Path }}"
 
-# standard bash codes start at 126 and progress upward. pick error codes from 125 downward for
+# standard shell codes start at 126 and progress upward. pick error codes from 125 downward for
 # script as to allow curl to output new error codes and still return a distinctive number.
 USAGE_ERR_CODE=125
 PROBE_ERR_CODE=124
