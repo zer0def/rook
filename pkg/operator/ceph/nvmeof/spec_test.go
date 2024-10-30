@@ -366,7 +366,7 @@ func TestDeploymentSpec(t *testing.T) {
 		initCont := d.Spec.Template.Spec.InitContainers[0]
 		assert.Equal(t, "generate-ceph-conf", initCont.Name)
 		assert.Equal(t, r.cephClusterSpec.CephVersion.Image, initCont.Image)
-		assert.Equal(t, []string{"/bin/bash", "-c", connectionConfigScript}, initCont.Command)
+		assert.Equal(t, []string{"/bin/sh", "-c", connectionConfigScript}, initCont.Command)
 		assert.Contains(t, initCont.Args, "--keyring=/etc/ceph/keyring")
 
 		assertEnvVar(t, initCont.Env, "GATEWAY_NAME", instanceName(nvmeof, "0"))

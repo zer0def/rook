@@ -327,7 +327,7 @@ func (r *ReconcileCephNVMeOFGateway) createCephConfigInitContainer(nvmeof *cephv
 		Image:           cephImage,
 		ImagePullPolicy: imagePullPolicy,
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			script,
 		},
