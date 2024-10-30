@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # do not use 'set -e -u' etc. because it is important to only fail this probe when failure is certain
 # spurious failures risk destabilizing ceph or the filesystem
 
