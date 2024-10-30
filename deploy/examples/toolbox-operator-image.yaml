@@ -27,7 +27,7 @@ spec:
         - name: rook-ceph-tools-operator-image
           image: docker.io/rook/ceph:v1.20.7
           command:
-            - /bin/bash
+            - /bin/sh
             - -c
             - |
               # Inlined for uniformity with the other toolbox manifests even though the rook image ships toolbox.sh.

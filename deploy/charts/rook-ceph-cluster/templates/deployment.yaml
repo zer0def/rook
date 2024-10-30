@@ -44,7 +44,7 @@ spec:
           image: "{{ .Values.cephImage.repository }}:{{ .Values.cephImage.tag }}"
           {{- end }}
           command:
-            - /bin/bash
+            - sh
             - -c
             - |
               # The script is inlined because the ceph image does not ship toolbox.sh.
