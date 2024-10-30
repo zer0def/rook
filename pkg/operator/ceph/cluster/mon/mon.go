@@ -740,10 +740,10 @@ func scheduleMonitor(c *Cluster, mon *monConfig) (*apps.Deployment, error) {
 		return nil, errors.Wrapf(err, "failed to find %q container in mon canary deployment", monContainerName)
 	}
 	monContainer.Image = c.rookImage
-	// As PID 1, sleep will not capture the SIGTERM signal, so use a bash
+	// As PID 1, sleep will not capture the SIGTERM signal, so use a shell
 	// trap to exit cleanly and quickly when the pod is deleted.
 	monContainer.Command = []string{
-		"/bin/bash",
+		"/bin/sh",
 		"-c",
 		`trap 'exit' SIGTERM
          while true; do sleep 1; done`,

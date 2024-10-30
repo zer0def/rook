@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 PROBE_TYPE="{{ .ProbeType }}"
 PROBE_PORT="{{ .Port }}"
