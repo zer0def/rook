@@ -502,7 +502,7 @@ spec:
                 - ALL
             privileged: true
           command:
-            - /bin/bash
+            - sh
             - -x
             - -e
             - -m

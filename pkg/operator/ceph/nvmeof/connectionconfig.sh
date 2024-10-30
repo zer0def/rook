@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -xEeuo pipefail
+#!/bin/sh
+set -xeuo pipefail
 
 cat << EOF > /etc/ceph/ceph.conf
 [global]

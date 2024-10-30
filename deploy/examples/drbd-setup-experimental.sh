@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Copyright 2026 The Rook Authors. All rights reserved.
 #
@@ -254,7 +254,7 @@ list_devices() {
 # Multiple by-id names can resolve to the same canonical device; sort|head -1 picks one deterministically.
 resolve_disk_path_on_node() {
     local node="$1" device_path="$2"
-    kubectl debug -q "node/$node" -- chroot /host env "DRBD_BLOCK_DEV=${device_path}" bash -c '
+    kubectl debug -q "node/$node" -- chroot /host env "DRBD_BLOCK_DEV=${device_path}" sh -c '
 if ! CANON=$(readlink -f "$DRBD_BLOCK_DEV" 2>/dev/null); then
   CANON="$DRBD_BLOCK_DEV"
 fi
@@ -461,7 +461,7 @@ resource ${DRBD_RESOURCE} {
     conf_dir="$(dirname "${DRBD_CONF_PATH}")"
     for node in "$NODE_0" "$NODE_1"; do
         msg "Node ${node}: writing DRBD config files to the host..."
-        if ! kubectl debug -q "node/$node" --image="${DEBUG_IMAGE}" -- chroot /host bash -c "
+        if ! kubectl debug -q "node/$node" --image="${DEBUG_IMAGE}" -- chroot /host sh -c "
 mkdir -p '${conf_dir}' '${DRBD_DIR_PATH}' /var/lib/drbd
 echo '${DRBD_RES_B64}' | base64 -d > '${res_path}'
 echo '${DRBD_MAIN_B64}' | base64 -d > '${DRBD_CONF_PATH}'
@@ -613,7 +613,7 @@ metadata:
   namespace: ${AUTOSTART_DAEMONSET_NS}
 data:
   start.sh: |
-    #!/bin/bash
+    #!/bin/sh
     while true; do
         if drbdadm -c "${DRBD_CONF_PATH}" status ${DRBD_RESOURCE} &>/dev/null; then
             echo "DRBD resource ${DRBD_RESOURCE} is already up"
@@ -653,7 +653,7 @@ spec:
       containers:
       - name: drbd-starter
         image: ${DRBD_IMAGE}
-        command: ["/bin/bash", "/scripts/start.sh"]
+        command: ["/bin/sh", "/scripts/start.sh"]
         securityContext:
           privileged: true
           capabilities:

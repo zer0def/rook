@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Copyright 2021 The Rook Authors. All rights reserved.
 #
@@ -22,7 +22,7 @@ if [ -z "$1" ]; then
 fi
 
 CEPH_DEBUG_LEVEL=$1
-CEPH_DEBUG_FLAG=(
+CEPH_DEBUG_FLAG="
   lockdep
   context
   crush
@@ -78,7 +78,7 @@ CEPH_DEBUG_FLAG=(
   mgrc
   dpdk
   eventtrace
-)
+"
 
 #############
 # FUNCTIONS #
@@ -102,18 +102,18 @@ exec_ceph_command() {
   fi
 
   # exec command
-  for flag in "${CEPH_DEBUG_FLAG[@]}"; do
-    ARGS=("$action" global debug_"$flag")
-    if [[ "$debug_level" != "default" ]]; then
-      ARGS+=("$debug_level")
+  for flag in ${CEPH_DEBUG_FLAG}; do
+    ARGS="${action} global debug_${flag}"
+    if [[ "${debug_level}" != "default" ]]; then
+      ARGS="${ARGS} ${debug_level}"
     fi
     # put stdout in /dev/null since increase debug log will overflow the terminal
-    echo "ceph config ${ARGS[*]}"
-    ceph config "${ARGS[@]}" &> /dev/null & pids+=($!)
+    echo "ceph config ${ARGS}"
+    ceph config ${ARGS} &> /dev/null & pids="${pids} ${!}"
 
   done
   echo "waiting for all the new logging configuration to be applied, this can take a few seconds"
-  wait "${pids[@]}"
+  wait ${pids}
 }
 
 ########

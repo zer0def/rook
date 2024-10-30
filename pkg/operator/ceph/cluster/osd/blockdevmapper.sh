@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -xe
 
 if [ "$#" -ne 2 ]; then
@@ -8,7 +8,7 @@ fi
 
 PVC_SOURCE="$1"
 PVC_DEST="$2"
-CP_ARGS=(--archive --dereference --verbose)
+CP_ARGS="--archive --dereference --verbose"
 
 if [ -b "$PVC_DEST" ]; then
 	PVC_SOURCE_MAJ_MIN=$(stat --format '%t%T' $PVC_SOURCE)
@@ -18,8 +18,8 @@ if [ -b "$PVC_DEST" ]; then
 		exit 0
 	else
 		echo "PVC's source major/minor numbers changed"
-		CP_ARGS+=(--remove-destination)
+		CP_ARGS+="--remove-destination"
 	fi
 fi
 
-cp "${CP_ARGS[@]}" "$PVC_SOURCE" "$PVC_DEST"
+cp ${CP_ARGS} "$PVC_SOURCE" "$PVC_DEST"

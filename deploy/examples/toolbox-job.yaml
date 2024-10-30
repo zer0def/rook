@@ -38,7 +38,7 @@ spec:
               name: ceph-config
               readOnly: true
           command:
-            - "bash"
+            - "sh"
             - "-c"
             - |
               # Modify this script to run any ceph, rbd, radosgw-admin, or other commands that could
