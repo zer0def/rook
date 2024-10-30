@@ -113,7 +113,7 @@ spec:
         - name: setup
           image: bitnami/kubectl:1.21.11
           command:
-            - /bin/bash
+            - /bin/sh
             - -c
             - |
               # Wait until sqlitevfs cephclient is ready
