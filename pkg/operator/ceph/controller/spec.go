@@ -601,7 +601,7 @@ cat ` + cfgPath + `
 `
 	return v1.Container{
 		Name:            "generate-minimal-ceph-conf",
-		Command:         []string{"/bin/bash", "-c", confScript},
+		Command:         []string{"/bin/sh", "-c", confScript},
 		Args:            []string{},
 		Image:           containerImage,
 		ImagePullPolicy: containerImagePullPolicy,
@@ -821,7 +821,7 @@ func LogCollectorContainer(daemonID, ns string, c cephv1.ClusterSpec, env []v1.E
 	return &v1.Container{
 		Name: logCollector,
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-x", // Print commands and their arguments as they are executed
 			"-e", // Exit immediately if a command exits with a non-zero status.
 			"-m", // Terminal job control, allows job to be terminated by SIGTERM
@@ -833,7 +833,7 @@ func LogCollectorContainer(daemonID, ns string, c cephv1.ClusterSpec, env []v1.E
 		VolumeMounts:    DaemonVolumeMounts(opconfig.NewDatalessDaemonDataPathMap(ns, c.DataDirHostPath), "", c.DataDirHostPath),
 		SecurityContext: DefaultContainerSecurityContext(),
 		Resources:       cephv1.GetLogCollectorResources(c.Resources),
-		// We need a TTY for the bash job control (enabled by -m)
+		// We need a TTY for the shell job control (enabled by -m)
 		TTY: true,
 		Env: env,
 	}
