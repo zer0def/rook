@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -o nounset # fail if variables are unset
 
 if [ -z "${ROOK_OSD_RESTART_INTERVAL:-}" ]; then

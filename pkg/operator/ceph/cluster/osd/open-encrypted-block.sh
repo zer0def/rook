@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -xe
 
 for var in ROOK_CEPH_FSID ROOK_PVC_NAME ROOK_ENCRYPTION_KEY_FILE_PATH ROOK_ENCRYPTION_BLOCK_PATH ROOK_ENCRYPTION_DM_NAME ROOK_ENCRYPTION_DM_PATH; do
@@ -32,7 +32,7 @@ function set_luks_subsystem_and_label {
 if [ -b "$DM_PATH" ]; then
 	echo "Encrypted device $BLOCK_PATH already opened at $DM_PATH"
 	for field in $(dmsetup table "$DM_NAME"); do
-		if [[ "$field" =~ ^[0-9]+\:[0-9]+ ]]; then
+		if echo -n "$field" | grep -qE '^[0-9]+\:[0-9]+'; then
 			underlaying_block="/sys/dev/block/$field"
 			if [ ! -d "$underlaying_block" ]; then
 				echo "Underlying block device $underlaying_block of crypt $DM_NAME disappeared!"

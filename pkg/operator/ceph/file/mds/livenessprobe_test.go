@@ -17,8 +17,8 @@ import (
 // acts as shim between go test definitions and bash code under test
 // define as string because embed doesn't work in _test.go files
 var probeShimWrapper string = `
-#!/usr/bin/env bash
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+#!/bin/sh
+SCRIPT_DIR=$(cd -- "$(dirname -- "${0}")" &>/dev/null && pwd)
 export SCRIPT_DIR
 function ceph() {
   # IMPORTANT: tests should always define behavior for specific commands being called to ensure code
@@ -36,7 +36,7 @@ function jq() {
 	$JQ "$@" # env should specify jq binary location
 }
 export -f jq
-bash "${@}"
+sh "${@}"
 `
 
 var (
@@ -113,7 +113,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -144,7 +144,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -175,7 +175,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -206,7 +206,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -237,7 +237,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -268,7 +268,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -299,7 +299,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -329,7 +329,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd = []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd = exec.Command("bash", shellcmd...)
+		cmd = exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -361,7 +361,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -392,7 +392,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd = []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd = exec.Command("bash", shellcmd...)
+		cmd = exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -423,7 +423,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -454,7 +454,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd = []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd = exec.Command("bash", shellcmd...)
+		cmd = exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -486,7 +486,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -516,7 +516,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd = []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd = exec.Command("bash", shellcmd...)
+		cmd = exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -539,7 +539,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		}
 	})
 	t.Run("ceph mds dump error", func(t *testing.T) {
-		cmd := exec.Command("bash", "-c", probeShimWrapper)
+		cmd := exec.Command("sh", "-c", probeShimWrapper)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -561,7 +561,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		}
 	})
 	t.Run("ceph mds dump invalid json", func(t *testing.T) {
-		cmd := exec.Command("bash", "-c", probeShimWrapper)
+		cmd := exec.Command("sh", "-c", probeShimWrapper)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -591,7 +591,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
@@ -622,7 +622,7 @@ func Test_liveness_probe_script(t *testing.T) {
 		defer os.Remove(file.Name())
 		shellcmd := []string{"-c", probeShimWrapper}
 		shellcmd = append(shellcmd, "-x", "livenessprobeSample.sh")
-		cmd := exec.Command("bash", shellcmd...)
+		cmd := exec.Command("sh", shellcmd...)
 		cmd.Env = []string{
 			"ROOK_CEPH_MON_HOST=fake-mon-host",
 			"ROOK_CEPH_MON_INITIAL_MEMBERS=fake-mon-members",
