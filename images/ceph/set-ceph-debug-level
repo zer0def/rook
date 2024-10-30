@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Copyright 2021 The Rook Authors. All rights reserved.
 #
@@ -102,6 +102,7 @@ exec_ceph_command() {
   fi
 
   # exec command
+  # !!
   for flag in "${CEPH_DEBUG_FLAG[@]}"; do
     ARGS=("$action" global debug_"$flag")
     if [[ "$debug_level" != "default" ]]; then

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash
+#!/bin/sh
 set -e
 
 ##############
@@ -328,6 +328,7 @@ END
 }
 
 function createTopology() {
+  ## !
   TOPOLOGY=""
   declare -a topology_failure_domain_values_array=()
   declare -a topology_pools_array=()
