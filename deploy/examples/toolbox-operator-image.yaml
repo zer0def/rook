@@ -27,7 +27,7 @@ spec:
         - name: rook-ceph-tools-operator-image
           image: rook/ceph:v1.14.12
           command:
-            - /bin/bash
+            - /bin/sh
             - -c
             - |
               # Replicate the script from toolbox.sh inline so the ceph image

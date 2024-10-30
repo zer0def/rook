@@ -20,7 +20,7 @@ spec:
       containers:
         - name: rook-direct-mount
           image: rook/ceph:v1.14.12
-          command: ["/bin/bash"]
+          command: ["/bin/sh"]
           args: ["-m", "-c", "/usr/local/bin/toolbox.sh"]
           imagePullPolicy: IfNotPresent
           tty: true
