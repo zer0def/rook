@@ -213,7 +213,7 @@ function set_luks_subsystem_and_label {
 if [ -b "$DM_PATH" ]; then
 	echo "Encrypted device $BLOCK_PATH already opened at $DM_PATH"
 	for field in $(dmsetup table "$DM_NAME"); do
-		if [[ "$field" =~ ^[0-9]+\:[0-9]+ ]]; then
+		if echo -n "$field" | grep -qE '^[0-9]+:[0-9]+'; then
 			underlaying_block="/sys/dev/block/$field"
 			if [ ! -d "$underlaying_block" ]; then
 				echo "Underlying block device $underlaying_block of crypt $DM_NAME disappeared!"
@@ -885,7 +885,7 @@ func (c *Cluster) getActivateOSDInitContainer(configDir, namespace, osdID string
 
 	container := &v1.Container{
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(activateOSDOnNodeCode, osdInfo.UUID, osdStoreFlag, osdInfo.CVMode, blockPathVarName),
 		},
@@ -927,7 +927,7 @@ func (c *Cluster) getPVCInitContainer(osdProps osdProperties) v1.Container {
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(blockDevMapper, fmt.Sprintf("/%s", osdProps.pvc.ClaimName), fmt.Sprintf("/mnt/%s", osdProps.pvc.ClaimName)),
 		},
@@ -960,7 +960,7 @@ func (c *Cluster) getPVCInitContainerActivate(mountPath string, osdProps osdProp
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(blockDevMapper, fmt.Sprintf("/%s", osdProps.pvc.ClaimName), cpDestinationName),
 		},
@@ -981,10 +981,10 @@ func (c *Cluster) generateEncryptionOpenBlockContainer(resources v1.ResourceRequ
 		Name:            containerName,
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
-		// Running via bash allows us to check whether the device is already opened or not
+		// Running via shell allows us to check whether the device is already opened or not
 		// If we don't the cryptsetup command will fail saying the device is already opened
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(openEncryptedBlock, c.clusterInfo.FSID, pvcName, encryptionKeyPath(), encryptionBlockDestinationCopy(mountPath, blockType), EncryptionDMName(pvcName, cryptBlockType), EncryptionDMPath(pvcName, cryptBlockType)),
 		},
@@ -1071,7 +1071,7 @@ func (c *Cluster) generateEncryptionCopyBlockContainer(resources v1.ResourceRequ
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(blockDevMapper, EncryptionDMPath(pvcName, blockType), path.Join(mountPath, blockName)),
 		},
@@ -1110,7 +1110,7 @@ func (c *Cluster) getPVCMetadataInitContainer(mountPath string, osdProps osdProp
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(blockDevMapper, fmt.Sprintf("/%s", osdProps.metadataPVC.ClaimName), fmt.Sprintf("/srv/%s", osdProps.metadataPVC.ClaimName)),
 		},
@@ -1148,7 +1148,7 @@ func (c *Cluster) getPVCMetadataInitContainerActivate(mountPath string, osdProps
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(blockDevMapper, fmt.Sprintf("/%s", osdProps.metadataPVC.ClaimName), cpDestinationName),
 		},
@@ -1172,7 +1172,7 @@ func (c *Cluster) getPVCWalInitContainer(mountPath string, osdProps osdPropertie
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(blockDevMapper, fmt.Sprintf("/%s", osdProps.walPVC.ClaimName), fmt.Sprintf("/wal/%s", osdProps.walPVC.ClaimName)),
 		},
@@ -1210,7 +1210,7 @@ func (c *Cluster) getPVCWalInitContainerActivate(mountPath string, osdProps osdP
 		Image:           c.spec.CephVersion.Image,
 		ImagePullPolicy: controller.GetContainerImagePullPolicy(c.spec.CephVersion.ImagePullPolicy),
 		Command: []string{
-			"/bin/bash",
+			"/bin/sh",
 			"-c",
 			fmt.Sprintf(blockDevMapper, fmt.Sprintf("/%s", osdProps.walPVC.ClaimName), cpDestinationName),
 		},
@@ -1422,7 +1422,7 @@ func (c *Cluster) getOSDServicePorts() []v1.ServicePort {
 
 func getOSDCmd(cmd []string, interval int) []string {
 	if interval != 0 {
-		return append([]string{"bash", "-x", "-c", cephOSDStart, "--"}, cmd...)
+		return append([]string{"sh", "-x", "-c", cephOSDStart, "--"}, cmd...)
 	}
 	return cmd
 }
